@@ -1,0 +1,19 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { font-synthesis: none; text-rendering: optimizeLegibility; }
+
+/* Map CSS vars to utility usage */
+body {
+  background-color: var(--bg-primary);
+  color:            var(--text-primary);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar       { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+/* Selection */
+::selection { background: var(--accent); color: #fff; }

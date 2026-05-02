@@ -1,0 +1,22 @@
+﻿{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "env": {
+    "GEMINI_API_KEY": "@gemini-api-key",
+    "RATE_LIMIT_MAX": "3",
+    "RATE_LIMIT_WINDOW_MS": "3600000"
+  },
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options",  "value": "nosniff"        },
+        { "key": "X-Frame-Options",          "value": "DENY"           },
+        { "key": "X-XSS-Protection",         "value": "1; mode=block"  },
+        { "key": "Referrer-Policy",          "value": "strict-origin"  }
+      ]
+    }
+  ]
+}
