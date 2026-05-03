@@ -1,57 +1,56 @@
-﻿/* ── Burnt Parchment (light) ─────────────────────────────── */
-.theme-parchment {
-  --bg-primary:   #F2E8D0;
-  --bg-secondary: #E8D9B8;
-  --bg-card:      #FAF4E8;
-  --text-primary: #2C1810;
-  --text-muted:   #6B4226;
-  --accent:       #E8612C;
-  --accent-glow:  #E8612C44;
-  --border:       #C8A882;
-  --shadow:       rgba(44,24,16,0.15);
-}
-.theme-parchment body {
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E"),
-    radial-gradient(ellipse at 20% 50%, #D4A97433 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 20%, #C8906044 0%, transparent 50%);
-}
+/* ══════════════════════════════════════════════════════
+   CrispCV — Theme CSS Variables
+══════════════════════════════════════════════════════ */
 
-/* ── Hellfire Kitchen (dark) ─────────────────────────────── */
+/* ── Hellfire Kitchen (dark) ── */
 .theme-hellfire {
-  --bg-primary:   #1A1814;
-  --bg-secondary: #2C2720;
-  --bg-card:      #221E1A;
-  --text-primary: #F2E8D0;
-  --text-muted:   #A89880;
-  --accent:       #E8612C;
-  --accent-glow:  #E8612C55;
-  --border:       #3D3530;
-  --shadow:       rgba(232,97,44,0.15);
-}
-.theme-hellfire body {
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"),
-    radial-gradient(ellipse at 50% 100%, #E8612C22 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 0%, #B8431A11 0%, transparent 50%);
+  --bg-primary:    #090705;
+  --bg-secondary:  #141008;
+  --bg-card:       #1A1510;
+  --text-primary:  #F0E4CC;
+  --text-muted:    #9A8A78;   /* was 7A6A58 — brighter now */
+  --accent:        #E8612C;
+  --accent-light:  #F4845F;
+  --accent-dark:   #B8431A;
+  --accent-glow:   #E8612C33;
+  --border:        #2A2018;
+  --border-accent: #E8612C33;
+  --shadow:        rgba(232,97,44,0.1);
 }
 
-/* ── Shared card burn-edge effect ────────────────────────── */
-.burn-edge {
-  position: relative;
-  overflow: hidden;
+/* ── Burnt Parchment (light) ── */
+.theme-parchment {
+  --bg-primary:    #E8D5B0;
+  --bg-secondary:  #DECA9E;
+  --bg-card:       #F2E6C8;
+  --text-primary:  #150900;   /* near black — maximum contrast */
+  --text-muted:    #5A3010;   /* dark brown — visible on parchment */
+  --accent:        #C8491A;
+  --accent-light:  #E06030;
+  --accent-dark:   #962E0A;
+  --accent-glow:   #C8491A28;
+  --border:        #C0945A;
+  --border-accent: #C8491A44;
+  --shadow:        rgba(150,46,10,0.1);
 }
-.burn-edge::after {
+
+/* ── Shared card border glow ── */
+.burn-edge { position: relative; }
+.burn-edge::before {
   content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at bottom, #E8612C18 0%, transparent 70%);
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--border-accent) 0%, transparent 50%, var(--border-accent) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
   pointer-events: none;
 }
 
-/* ── Score meter flame fill ──────────────────────────────── */
+/* ── Flame meter bar ── */
 .flame-meter-fill {
-  background: linear-gradient(90deg, #F4845F 0%, #E8612C 50%, #B8431A 100%);
-  box-shadow: 0 0 12px #E8612C88;
-  transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: linear-gradient(90deg, #F4845F 0%, #E8612C 55%, #B8431A 100%);
+  box-shadow: 0 0 10px #E8612C77;
+  transition: width 1.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }

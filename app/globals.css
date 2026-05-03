@@ -1,19 +1,231 @@
-﻿@tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root { font-synthesis: none; text-rendering: optimizeLegibility; }
-
-/* Map CSS vars to utility usage */
-body {
-  background-color: var(--bg-primary);
-  color:            var(--text-primary);
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar       { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+/* ══════════════════════════════════════════
+   CUSTOM CURSOR — pure CSS, zero JS lag
+══════════════════════════════════════════ */
+*, *::before, *::after { cursor: none !important; }
 
-/* Selection */
-::selection { background: var(--accent); color: #fff; }
+.cursor-dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: 8px; height: 8px;
+  background: #E8612C;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: width 0.15s, height 0.15s, background 0.15s;
+  will-change: transform;
+}
+.cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  width: 32px; height: 32px;
+  border: 1.5px solid #E8612C66;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s ease-out, height 0.25s ease-out, border-color 0.25s;
+  will-change: transform;
+}
+body:has(button:hover) .cursor-dot,
+body:has(a:hover) .cursor-dot { width: 16px; height: 16px; background: #F4845F; }
+body:has(button:hover) .cursor-ring,
+body:has(a:hover) .cursor-ring { width: 52px; height: 52px; border-color: #E8612CAA; }
+
+/* ══════════════════════════════════════════
+   SCROLLBAR
+══════════════════════════════════════════ */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #E8612C55; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #E8612C; }
+::selection { background: #E8612C; color: #fff; }
+
+/* ══════════════════════════════════════════
+   BASE
+══════════════════════════════════════════ */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.4s, color 0.4s;
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════════════
+   GRAIN OVERLAY
+══════════════════════════════════════════ */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9000;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/* ══════════════════════════════════════════
+   SCAN LINE
+══════════════════════════════════════════ */
+@keyframes scan {
+  0%   { top: -2px; opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { top: 100vh; opacity: 0; }
+}
+.scanline {
+  position: fixed;
+  left: 0; right: 0; height: 2px;
+  background: linear-gradient(transparent, #E8612C18, transparent);
+  pointer-events: none;
+  z-index: 8999;
+  animation: scan 12s linear infinite;
+}
+
+/* ══════════════════════════════════════════
+   FIRE FLICKER
+══════════════════════════════════════════ */
+@keyframes fireFlicker {
+  0%,100% { text-shadow: 0 0 20px #E8612C, 0 0 40px #E8612C66; }
+  33%     { text-shadow: 0 0 30px #F4845F, 0 0 60px #E8612C99; }
+  66%     { text-shadow: 0 0 15px #B8431A, 0 0 35px #E8612C44; }
+}
+.fire-flicker { animation: fireFlicker 2.5s ease-in-out infinite; }
+
+/* ══════════════════════════════════════════
+   FLAME METER
+══════════════════════════════════════════ */
+.flame-meter-fill {
+  background: linear-gradient(90deg, #F4845F 0%, #E8612C 55%, #B8431A 100%);
+  box-shadow: 0 0 10px #E8612C77, 0 0 20px #E8612C33;
+  transition: width 1.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ══════════════════════════════════════════
+   BURN EDGE CARD BORDER
+══════════════════════════════════════════ */
+.burn-edge { position: relative; }
+.burn-edge::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, #E8612C55 0%, #E8612C11 45%, #E8612C44 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════════
+   COOK PROGRESS BAR
+══════════════════════════════════════════ */
+@keyframes cookProgress {
+  0%   { width: 2%; }
+  15%  { width: 28%; }
+  40%  { width: 55%; }
+  65%  { width: 72%; }
+  85%  { width: 88%; }
+  100% { width: 97%; }
+}
+.cook-progress-bar { animation: cookProgress 14s ease-out forwards; }
+
+/* ══════════════════════════════════════════
+   SHIMMER TEXT
+══════════════════════════════════════════ */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+.shimmer-text {
+  background: linear-gradient(90deg, var(--text-muted) 0%, var(--accent) 45%, var(--text-muted) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+/* ══════════════════════════════════════════
+   SCORE REVEAL
+══════════════════════════════════════════ */
+@keyframes scoreReveal {
+  0%   { transform: scale(0) rotate(-10deg); opacity: 0; }
+  60%  { transform: scale(1.15) rotate(2deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+.score-reveal { animation: scoreReveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+/* ══════════════════════════════════════════
+   VERDICT PULSE
+══════════════════════════════════════════ */
+@keyframes verdictPulse {
+  0%,100% { box-shadow: 0 0 20px currentColor; }
+  50%     { box-shadow: 0 0 40px currentColor, 0 0 80px currentColor; }
+}
+.verdict-pulse { animation: verdictPulse 2s ease-in-out infinite; }
+
+/* ══════════════════════════════════════════
+   CHAT BUBBLE (result roast text)
+══════════════════════════════════════════ */
+.chat-bubble {
+  position: relative;
+  border-radius: 4px 16px 16px 16px;
+}
+.chat-bubble::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -8px;
+  border: 8px solid transparent;
+  border-top-color: var(--bg-card);
+  border-right-color: var(--bg-card);
+}
+
+/* ══════════════════════════════════════════
+   PRIORITY BADGES
+══════════════════════════════════════════ */
+.badge-high { background: #ef444422; color: #ef4444; border: 1px solid #ef444455; }
+.badge-med  { background: #f59e0b22; color: #f59e0b; border: 1px solid #f59e0b55; }
+.badge-low  { background: #4ade8022; color: #4ade80; border: 1px solid #4ade8055; }
+.badge-nice { background: #60a5fa22; color: #60a5fa; border: 1px solid #60a5fa55; }
+
+/* ══════════════════════════════════════════
+   RADAR CHART
+══════════════════════════════════════════ */
+.recharts-polar-grid-angle line  { stroke: var(--border) !important; }
+.recharts-polar-grid-concentric path { stroke: var(--border) !important; }
+.recharts-text {
+  fill: var(--text-muted) !important;
+  font-family: var(--font-courier) !important;
+  font-size: 11px !important;
+}
+
+/* ══════════════════════════════════════════
+   PARCHMENT CONTRAST FIXES
+══════════════════════════════════════════ */
+.theme-parchment input,
+.theme-parchment textarea {
+  color: var(--text-primary) !important;
+  background: var(--bg-secondary) !important;
+  border-color: var(--border) !important;
+}
+.theme-parchment input::placeholder,
+.theme-parchment textarea::placeholder {
+  color: var(--text-muted) !important;
+  opacity: 0.8;
+}
+.theme-parchment .burn-edge::before {
+  background: linear-gradient(135deg, #B8431A44 0%, #B8431A11 45%, #B8431A33 100%);
+}
