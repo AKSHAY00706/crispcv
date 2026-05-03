@@ -2,7 +2,7 @@
 
 > AI-powered portfolio and resume roaster. Crispy feedback, zero sugarcoating.
 
-## Quick Start
+## Quick    Start
 
 ```bash
 # 1. Install Node dependencies
