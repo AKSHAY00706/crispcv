@@ -229,3 +229,15 @@ body::after {
 .theme-parchment .burn-edge::before {
   background: linear-gradient(135deg, #B8431A44 0%, #B8431A11 45%, #B8431A33 100%);
 }
+
+/* Disable custom cursor on mobile/touch devices */
+@media (pointer: coarse) {
+  *, *::before, *::after {
+    cursor: auto !important;
+  }
+
+  .cursor-dot,
+  .cursor-ring {
+    display: none !important;
+  }
+}
